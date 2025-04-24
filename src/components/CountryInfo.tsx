@@ -1,17 +1,43 @@
-interface CountryInfoProps {
+import React from 'react';
+
+type DemographicData = {
+  birthRate: number | null;
+  deathRate: number | null;
+  lifeExpectancy: number | null;
+  lastUpdatedYear: string;
+};
+
+type CountryInfoProps = {
   name: string;
   population: number;
-  o3Value: number;
-  o3Unit: string;
-  o3Date: string;
-}
+  capital: string;
+  region: string;
+  subregion: string;
+  demographics: DemographicData;
+};
 
-export const CountryInfo = ({ name, population, o3Value, o3Unit, o3Date }: CountryInfoProps) => {
+export const CountryInfo: React.FC<CountryInfoProps> = ({
+  name,
+  population,
+  capital,
+  region,
+  subregion,
+  demographics
+}) => {
   return (
-    <div>
+    <div className="country-info">
       <h2>{name}</h2>
-      <p>Población: {population.toLocaleString()}</p>
-      <p>Emisiones O3: {o3Value} {o3Unit} (Fecha: {o3Date})</p>
+      <p><strong>Población:</strong> {population.toLocaleString()}</p>
+      <p><strong>Capital:</strong> {capital}</p>
+      <p><strong>Región:</strong> {region}</p>
+      <p><strong>Subregión:</strong> {subregion}</p>
+      <div className="demographics">
+        <h3>Datos Demográficos</h3>
+        <p><strong>Tasa de natalidad:</strong> {demographics.birthRate ?? 'N/A'}</p>
+        <p><strong>Tasa de mortalidad:</strong> {demographics.deathRate ?? 'N/A'}</p>
+        <p><strong>Esperanza de vida:</strong> {demographics.lifeExpectancy ?? 'N/A'}</p>
+        <p><strong>Última actualización:</strong> {demographics.lastUpdatedYear}</p>
+      </div>
     </div>
   );
 };

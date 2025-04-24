@@ -10,52 +10,98 @@ function App() {
     countryData: {
       name: string;
       population: number;
-      iso3Code: string;
+      capital: string;
+      region: string;
+      subregion: string;
       latlng: [number, number];
     };
-    o3Data: {
-      value: number;
-      unit: string;
-      date: string;
+    demographics: {
+      birthRate: number | null;
+      deathRate: number | null;
+      lifeExpectancy: number | null;
+      lastUpdatedYear: string;
     };
   } | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const { fetchCountryData } = useCountryData();
 
   const handleSearch = async () => {
+    if (!countryName.trim()) {
+      setError('Por favor ingresa un nombre de país');
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+    setCountryData(null);
+
     try {
       const normalizedName = countryName.trim().toLowerCase();
       const data = await fetchCountryData(normalizedName);
-      
       setCountryData(data);
     } catch (error) {
-      alert(error instanceof Error ? error.message : 'Error desconocido');
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido al buscar el país';
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="App">
-      <h1>Datos de Población y O₃ por País</h1>
+      <header>
+        <h1>Explorador de Datos Demográficos</h1>
+        <p className="subtitle">Consulta información detallada de cualquier país</p>
+      </header>
+
       <div className="search-container">
         <input
           type="text"
           value={countryName}
           onChange={(e) => setCountryName(e.target.value)}
-          placeholder="Ej: Mexico, Germany..."
+          placeholder="Ej: España, México, Japón..."
           onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+          disabled={isLoading}
         />
-        <button onClick={handleSearch}>Buscar</button>
+        <button 
+          onClick={handleSearch}
+          disabled={isLoading}
+          className="search-button"
+        >
+          {isLoading ? (
+            <span className="loading-text">Buscando...</span>
+          ) : (
+            <span>Buscar</span>
+          )}
+        </button>
       </div>
 
-      {countryData && (
+      {error && (
+        <div className="error-message">
+          <span role="img" aria-label="Error">⚠️</span> {error}
+        </div>
+      )}
+
+      {isLoading && (
+        <div className="loading-indicator">
+          <span className="spinner" role="status" aria-label="Cargando"></span>
+          Cargando datos del país...
+        </div>
+      )}
+
+      {countryData && !isLoading && (
         <div className="data-container">
           <CountryInfo
             name={countryData.countryData.name}
             population={countryData.countryData.population}
-            o3Value={countryData.o3Data.value}
-            o3Unit={countryData.o3Data.unit}
-            o3Date={countryData.o3Data.date}
+            capital={countryData.countryData.capital}
+            region={countryData.countryData.region}
+            subregion={countryData.countryData.subregion}
+            demographics={countryData.demographics}
           />
+          
           <div className="map-wrapper">
             <MapView
               latlng={countryData.countryData.latlng}
@@ -64,6 +110,10 @@ function App() {
           </div>
         </div>
       )}
+
+      <footer className="app-footer">
+        <p>Datos proporcionados por REST Countries y World Bank API</p>
+      </footer>
     </div>
   );
 }
