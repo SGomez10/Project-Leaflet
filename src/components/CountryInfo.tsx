@@ -27,16 +27,16 @@ export const CountryInfo: React.FC<CountryInfoProps> = ({
   return (
     <div className="country-info">
       <h2>{name}</h2>
-      <p><strong>Población:</strong> {population.toLocaleString()}</p>
+      <p><strong>Population:</strong> {population.toLocaleString()}</p>
       <p><strong>Capital:</strong> {capital}</p>
-      <p><strong>Región:</strong> {region}</p>
-      <p><strong>Subregión:</strong> {subregion}</p>
+      <p><strong>Continent:</strong> {region}</p>
+      <p><strong>Region:</strong> {subregion}</p>
       <div className="demographics">
-        <h3>Datos Demográficos</h3>
-        <p><strong>Tasa de natalidad:</strong> {demographics.birthRate ?? 'N/A'}</p>
-        <p><strong>Tasa de mortalidad:</strong> {demographics.deathRate ?? 'N/A'}</p>
-        <p><strong>Esperanza de vida:</strong> {demographics.lifeExpectancy ?? 'N/A'}</p>
-        <p><strong>Última actualización:</strong> {demographics.lastUpdatedYear}</p>
+        <h3>Demographic Data</h3>
+        <p><strong>Birth rate:</strong> {demographics.birthRate ?? 'N/A'}</p>
+        <p><strong>Death rate:</strong> {demographics.deathRate ?? 'N/A'}</p>
+        <p><strong>Life expectancy:</strong> {demographics.lifeExpectancy ?? 'N/A'}</p>
+        <p><strong>Last Data update:</strong> {demographics.lastUpdatedYear}</p>
       </div>
     </div>
   );

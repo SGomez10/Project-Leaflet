@@ -52,8 +52,8 @@ function App() {
   return (
     <div className="App">
       <header>
-        <h1>Explorador de Datos Demográficos</h1>
-        <p className="subtitle">Consulta información detallada de cualquier país</p>
+        <h1>Demographic Data</h1>
+        <p className="subtitle">Search about demographic info about any country!</p>
       </header>
 
       <div className="search-container">
@@ -61,7 +61,7 @@ function App() {
           type="text"
           value={countryName}
           onChange={(e) => setCountryName(e.target.value)}
-          placeholder="Ej: España, México, Japón..."
+          placeholder="Spain, Mexico, Japan..."
           onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
           disabled={isLoading}
         />
@@ -71,23 +71,23 @@ function App() {
           className="search-button"
         >
           {isLoading ? (
-            <span className="loading-text">Buscando...</span>
+            <span className="loading-text">Searching...</span>
           ) : (
-            <span>Buscar</span>
+            <span>Search</span>
           )}
         </button>
       </div>
 
       {error && (
         <div className="error-message">
-          <span role="img" aria-label="Error">⚠️</span> {error}
+          <span role="img" aria-label="Error">Error!</span> {error}
         </div>
       )}
 
       {isLoading && (
         <div className="loading-indicator">
           <span className="spinner" role="status" aria-label="Cargando"></span>
-          Cargando datos del país...
+          Loading country Data...
         </div>
       )}
 
@@ -112,7 +112,7 @@ function App() {
       )}
 
       <footer className="app-footer">
-        <p>Datos proporcionados por REST Countries y World Bank API</p>
+        <p>Data provided by REST Countries and World Bank API</p>
       </footer>
     </div>
   );
